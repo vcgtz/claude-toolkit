@@ -76,7 +76,19 @@ Report only real findings. Do not add findings to make the report look complete.
 
 Sort findings by severity before you write them: all 🔴 Critical first, then all 🟠 High, then 🟡 Medium, then 🔵 Low. Never put a finding after one with a lower severity. Number them after sorting.
 
-The code block in each finding must be code **added or changed in this change**, copied exactly, with its file and line. If the problem shows up in code that was not changed (for example a caller), show the changed code that causes it and name the affected file and line in **Problem**.
+### Show the code of every finding
+
+Each finding must show the code it is about, so the reader understands it without opening the file.
+
+**Every finding, at every severity (🔵 Low too), has all of these:** Where, the code block, Problem, When it happens, Why it matters, and Suggestion. Only **Affected code (not changed)** and **How to verify** are optional.
+
+- **Where:** the file and the line range (`path/to/file.ext:42-47`), the function or method, and the checklist area (for example Error handling, Tests, Simplicity).
+- **Code block:** copy the lines exactly as they are in the reviewed version of the file, each with its line number, plus up to 3 lines of context before and after. Mark the lines the finding is about with `>` at the start. Use the line numbers of the reviewed version: the Read tool shows them, and for a PR that is not checked out use `git show FETCH_HEAD:<path> | cat -n`.
+- **The marked lines must be added or changed in this change.** Context lines may be unchanged code.
+- Keep each block to the relevant part, about 25 lines at most. If the problem involves two places in the change, show two blocks.
+- If the problem shows up in code that was **not** changed (for example a caller that now breaks), first show the changed code that causes it, then a second block titled **Affected code (not changed)** with that file, its line range and its lines.
+- **Suggestion:** when the fix is code, show the corrected version of the same lines in a code block. Keep it short; it shows the idea, not a full patch.
+- Never show code you did not read, and never change the original lines inside the code block.
 
 Use this format:
 
@@ -93,15 +105,37 @@ Use this format:
 
 ### 1. 🔴 Critical: <short title>
 
-`path/to/file.ext:42`
+**Where:** `path/to/file.ext:42-44` in `functionName()` · **Area:** <checklist area>
 
 ```<language>
-<exact code from the change>
+  39 |   const order = await getOrder(id);
+  40 |
+  41 |   try {
+> 42 |     await submit(order);
+> 43 |   } catch (error) {
+> 44 |     return null;
+  45 |   }
+  46 | }
 ```
 
-**Problem:** <what is wrong, with facts you checked>
-**Why it matters:** <the real impact: who or what breaks, and when>
-**Suggestion:** <a concrete fix; add a short code example if it helps>
+**Affected code (not changed):** `path/to/caller.ext:18-20` (only when a finding breaks unchanged code)
+
+```<language>
+  18 |   const result = await process(id);
+> 19 |   await notifyCustomer(result.status);
+  20 | }
+```
+
+**Problem:** <what is wrong, and the facts you checked to confirm it, for example "searched for callers: 2 found">
+**When it happens:** <the concrete input or situation that triggers it, and the wrong result>
+**Why it matters:** <the real impact: who or what breaks, and how bad it is>
+**Suggestion:** <what to change>
+
+```<language>
+<the corrected version of the same lines>
+```
+
+**How to verify:** <a test or a check that proves the fix; skip when it is obvious>
 
 ### 2. 🟠 High: <short title>
 ...
