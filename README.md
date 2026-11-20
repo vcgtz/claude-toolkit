@@ -1,13 +1,12 @@
 # claude-toolkit
 
-My Claude Code plugins: skills, agents and hooks I use on every computer.
+Claude Code plugins: skills, agents and hooks I use on every computer.
 
 ## Plugins
 
 | Plugin      | What it has                                  |
 |-------------|----------------------------------------------|
 | `personal`  | Personal tools and helpers                   |
-| `work`      | Work tools: ClickUp, Linear, weekly reports   |
 | `dev-tools` | Coding helpers: reviews, refactoring, git    |
 
 ## Install on a new computer
@@ -17,7 +16,6 @@ In Claude Code:
 ```text
 /plugin marketplace add vcgtz/claude-toolkit
 /plugin install personal@claude-toolkit
-/plugin install work@claude-toolkit
 /plugin install dev-tools@claude-toolkit
 ```
 
