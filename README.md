@@ -14,20 +14,60 @@ Claude Code plugins: skills, agents and hooks I use on every computer.
 - **`/dev-tools:review [PR number | PR URL | branch]`**: principal-engineer code review. With no argument, it reviews the current branch plus uncommitted changes. It returns findings ordered by severity (🔴 Critical, 🟠 High, 🟡 Medium, 🔵 Low), each with the changed code, why it matters and a suggested fix. It runs the `code-reviewer` agent, which is read-only.
 - **`code-reviewer` agent**: does the review. Claude can also use it on its own after finishing a code change.
 
-## Install on a new computer
+## Install and update
 
-In Claude Code:
+Claude Code in the terminal and the Claude Code desktop app read the same configuration
+(`~/.claude/settings.json`). Set this up once per computer, and both see the same plugins.
 
-```text
-/plugin marketplace add vcgtz/claude-toolkit
-/plugin install personal@claude-toolkit
-/plugin install dev-tools@claude-toolkit
+### 1. Add the marketplace (once per computer)
+
+From a terminal:
+
+```bash
+claude plugin marketplace add vcgtz/claude-toolkit
 ```
 
-Get the latest changes:
+Or, inside a Claude Code session in the terminal: `/plugin marketplace add vcgtz/claude-toolkit`.
 
-```text
-/plugin marketplace update claude-toolkit
+The desktop app shows plugins from marketplaces that are already added, so add the marketplace from
+the terminal first.
+
+### 2. Install the plugins
+
+**Terminal:**
+
+```bash
+claude plugin install dev-tools@claude-toolkit
+claude plugin install personal@claude-toolkit
+```
+
+**Desktop app** (local or SSH session): click **+** next to the prompt box → **Plugins** →
+**Add plugin**, and pick the plugin from the `claude-toolkit` list. Use **Manage plugins** to enable,
+disable or uninstall a plugin.
+
+Plugins are installed for your user by default, so they work in every project, in both apps.
+
+### 3. Use them
+
+- **Terminal:** type `/` and the skill name, for example `/dev-tools:review 123`.
+- **Desktop app:** type `/` in the prompt box, or click **+** → **Slash commands**, and pick the skill.
+- Plugins do not work in cloud sessions (desktop app cloud sessions or Claude Code on the web).
+
+### 4. Get updates
+
+```bash
+claude plugin marketplace update claude-toolkit
+claude plugin update dev-tools@claude-toolkit
+claude plugin update personal@claude-toolkit
+```
+
+Then restart Claude Code in the terminal, and quit and reopen the desktop app.
+
+### Check what is installed
+
+```bash
+claude plugin marketplace list
+claude plugin list
 ```
 
 ## Develop and test locally
