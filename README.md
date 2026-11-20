@@ -9,6 +9,11 @@ Claude Code plugins: skills, agents and hooks I use on every computer.
 | `personal`  | Personal tools and helpers                   |
 | `dev-tools` | Coding helpers: reviews, refactoring, git    |
 
+### dev-tools
+
+- **`/dev-tools:review [PR number | PR URL | branch]`**: principal-engineer code review. With no argument, it reviews the current branch plus uncommitted changes. It returns findings ordered by severity (🔴 Critical, 🟠 High, 🟡 Medium, 🔵 Low), each with the changed code, why it matters and a suggested fix. It runs the `code-reviewer` agent, which is read-only.
+- **`code-reviewer` agent**: does the review. Claude can also use it on its own after finishing a code change.
+
 ## Install on a new computer
 
 In Claude Code:
