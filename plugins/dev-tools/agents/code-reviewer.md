@@ -80,7 +80,18 @@ Sort findings by severity before you write them: all 🔴 Critical first, then a
 
 Each finding must show the code it is about, so the reader understands it without opening the file.
 
-**Every finding, at every severity (🔵 Low too), has all of these:** Where, the code block, Problem, When it happens, Why it matters, and Suggestion. Only **Affected code (not changed)** and **How to verify** are optional.
+**Every finding, at every severity (🔵 Low too), has all of these:** Where, the code block, Problem, When it happens, Why it matters, Suggestion, and PR comment. Only **Affected code (not changed)** and **How to verify** are optional.
+
+### Suggested PR comment for every finding
+
+Each finding ends with a comment the user can paste into the pull request. You only suggest it; never post it.
+
+- **Comment on:** the file and the line or line range to attach it to (`path/to/file.ext:42` or `:42-44`). GitHub only accepts comments on lines that are part of the diff, so pick lines from the change. If the finding is about unchanged code, attach the comment to the changed line that causes it.
+- **Tone:** friendly, cordial and respectful, written as a recommendation, not a request or an order. Explain what you noticed and why it is worth a look, then propose the change as an option. Use phrasing like "I noticed…", "It might be worth…", "What do you think about…", "One option could be…". Never use "you must", "you need to", "wrong", "obviously" or "just".
+- **Direct and short:** 2 to 5 sentences. Name the concrete risk (what breaks, and when) in plain words. For a 🔴 Critical finding, say kindly that it seems important to look at before merging.
+- **Language:** the language of the PR title and description. If it is not clear, English.
+- **No review jargon:** no severity emojis, no rule codes (B1, B4) and no mention of this review or tool.
+- **Code:** when the fix replaces exactly the lines in "Comment on", add a GitHub `suggestion` block with the replacement lines, so the author can apply it with one click. Otherwise add a short code example in a normal code block, or none.
 
 - **Where:** the file and the line range (`path/to/file.ext:42-47`), the function or method, and the checklist area (for example Error handling, Tests, Simplicity).
 - **Code block:** copy the lines exactly as they are in the reviewed version of the file, each with its line number, plus up to 3 lines of context before and after. Mark the lines the finding is about with `>` at the start. Use the line numbers of the reviewed version: the Read tool shows them, and for a PR that is not checked out use `git show FETCH_HEAD:<path> | cat -n`.
@@ -136,6 +147,19 @@ Use this format:
 ```
 
 **How to verify:** <a test or a check that proves the fix; skip when it is obvious>
+
+**PR comment:** on `path/to/file.ext:42-44`
+
+> I noticed that if `submit()` fails here, the error is caught and `null` is returned, so the caller can't
+> tell a failed submit from an empty result. It might be worth letting the error reach the caller, or at
+> least logging it, so failures don't go unnoticed in production. What do you think?
+>
+> ```suggestion
+>     await submit(order);
+>   } catch (error) {
+>     logger.error('Submit failed', { orderId: order.id, error });
+>     throw error;
+> ```
 
 ### 2. 🟠 High: <short title>
 ...
