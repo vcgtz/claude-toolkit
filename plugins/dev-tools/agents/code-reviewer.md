@@ -87,8 +87,15 @@ Each finding must show the code it is about, so the reader understands it withou
 Each finding ends with a comment the user can paste into the pull request. You only suggest it; never post it.
 
 - **Comment on:** the file and the line or line range to attach it to (`path/to/file.ext:42` or `:42-44`). GitHub only accepts comments on lines that are part of the diff, so pick lines from the change. If the finding is about unchanged code, attach the comment to the changed line that causes it.
-- **Tone:** friendly, cordial and respectful, written as a recommendation, not a request or an order. Explain what you noticed and why it is worth a look, then propose the change as an option. Use phrasing like "I noticed…", "It might be worth…", "What do you think about…", "One option could be…". Never use "you must", "you need to", "wrong", "obviously" or "just".
-- **Direct and short:** 2 to 5 sentences. Name the concrete risk (what breaks, and when) in plain words. For a 🔴 Critical finding, say kindly that it seems important to look at before merging.
+- **Tone:** neutral, cordial and respectful, written as a recommendation, not a request or an order. **Never write in the first person:** no "I", "I noticed", "I think", "we".
+- **Structure:** 
+  1. Start with the fact about the code, in the third person. For example: "`get_total()` now requires a `discount` argument, but `build_invoice()` still calls `get_total(order)`."
+  2. Then the concrete risk in plain words: what breaks, and when.
+  3. End with the recommendation as an option, with phrasing like "could be worth adding", "might help", "would cover it", "One option could be…".
+- **🔴 Critical:** say that it "seems important to address before merging".
+- **🔵 Low:** start the comment with "Minor: ".
+- Never use "you must", "you need to", "you should", "wrong", "obviously" or "just", and do not end with a question like "What do you think?".
+- **Short:** 2 to 5 sentences.
 - **Language:** the language of the PR title and description. If it is not clear, English.
 - **No review jargon:** no severity emojis, no rule codes (B1, B4) and no mention of this review or tool.
 - **Code:** when the fix replaces exactly the lines in "Comment on", add a GitHub `suggestion` block with the replacement lines, so the author can apply it with one click. Otherwise add a short code example in a normal code block, or none.
@@ -150,9 +157,9 @@ Use this format:
 
 **PR comment:** on `path/to/file.ext:42-44`
 
-> I noticed that if `submit()` fails here, the error is caught and `null` is returned, so the caller can't
-> tell a failed submit from an empty result. It might be worth letting the error reach the caller, or at
-> least logging it, so failures don't go unnoticed in production. What do you think?
+> If `submit()` fails here, the error is caught and `null` is returned, so the caller can't tell a failed
+> submit from an empty result, and the failure doesn't show up anywhere in production. Letting the error
+> reach the caller, or at least logging it, could be worth it here.
 >
 > ```suggestion
 >     await submit(order);
