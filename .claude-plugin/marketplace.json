@@ -1,0 +1,24 @@
+{
+  "name": "claude-toolkit",
+  "description": "My personal Claude Code plugins: skills, agents and hooks",
+  "owner": {
+    "name": "Vicente"
+  },
+  "plugins": [
+    {
+      "name": "personal",
+      "source": "./plugins/personal",
+      "description": "Personal tools and helpers"
+    },
+    {
+      "name": "work",
+      "source": "./plugins/work",
+      "description": "Work tools: ClickUp, Linear, weekly reports"
+    },
+    {
+      "name": "dev-tools",
+      "source": "./plugins/dev-tools",
+      "description": "Coding helpers: reviews, refactoring, git"
+    }
+  ]
+}
